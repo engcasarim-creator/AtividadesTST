@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atividade Prática: Riscos Biológicos e Biossegurança</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-hover: #1e40af;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --border: #cbd5e1;
+      --accent: #d97706;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    header {
+      border-bottom: 3px solid var(--primary);
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+
+    header h1 {
+      color: var(--primary);
+      font-size: 1.8rem;
+      margin-bottom: 5px;
+    }
+
+    header p {
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .student-info {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 15px;
+      background: #f1f5f9;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 25px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      font-weight: bold;
+      font-size: 0.85rem;
+      margin-bottom: 5px;
+      color: #334155;
+    }
+
+    .form-group input, .form-group textarea {
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.95rem;
+    }
+
+    .case-study {
+      background-color: #fffbeb;
+      border-left: 5px solid var(--accent);
+      padding: 20px;
+      border-radius: 4px;
+      margin-bottom: 30px;
+    }
+
+    .case-study h2 {
+      color: #92400e;
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+    }
+
+    .case-study p {
+      margin-bottom: 10px;
+      font-size: 0.98rem;
+      color: #451a03;
+    }
+
+    .questions-section {
+      margin-bottom: 30px;
+    }
+
+    .question-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .question-card h3 {
+      color: var(--primary);
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+
+    .question-card label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .actions {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .btn-submit {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      box-shadow: 0 4px 6px rgba(30, 58, 138, 0.2);
+    }
+
+    .btn-submit:hover {
+      background-color: var(--primary-hover);
+    }
+
+    /* Print / PDF Specific Styling */
+    @media print {
+      body {
+        background-color: #ffffff;
+        padding: 0;
+      }
+
+      .container {
+        box-shadow: none;
+        padding: 0;
+        max-width: 100%;
+      }
+
+      .actions {
+        display: none;
+      }
+
+      .case-study {
+        border-left: 3px solid #000;
+        background-color: #f9f9f9;
+      }
+
+      textarea, input {
+        border: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+      }
+
+      textarea {
+        min-height: auto;
+      }
+
+      .print-only-text {
+        display: block !important;
+        white-space: pre-wrap;
+        font-family: inherit;
+        font-size: 0.95rem;
+        margin-top: 5px;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+    }
+
+    .print-only-text {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Curso Técnico em Segurança do Trabalho</h1>
+      <p>Disciplina: Higiene Ocupacional | Módulo: Riscos Biológicos e Biossegurança</p>
+    </header>
+
+    <form id="activityForm">
+      <!-- Identificação do Aluno -->
+      <div class="student-info">
+        <div class="form-group">
+          <label for="studentName">Nome do Aluno(a):</label>
+          <input type="text" id="studentName" required placeholder="Digite seu nome completo">
+        </div>
+        <div class="form-group">
+          <label for="studentTurma">Turma:</label>
+          <input type="text" id="studentTurma" required placeholder="Ex: TST-2026">
+        </div>
+        <div class="form-group">
+          <label for="activityDate">Data:</label>
+          <input type="date" id="activityDate" required>
+        </div>
+      </div>
+
+      <!-- Estudo de Caso -->
+      <section class="case-study">
+        <h2>Estudo de Caso: Exposição Acidental em Laboratório Hospitalar</h2>
+        <p><strong>Cenário:</strong> No Laboratório de Análises Clínicas do Hospital Central, a técnica de laboratório Mariana estava encarregada do processamento de amostras de sangue total de pacientes internados no setor de infectologia.</p>
+        <p>Durante a centrifugação e fracionamento manual de tubos contendo amostras identificadas com **Vírus da Hepatite B (VHB)** e **Mycobacterium tuberculosis**, ocorreu a queda de uma estante de tubos na bancada de trabalho. Um dos tubos de ensaio de vidro se rompeu, gerando respingos na face da profissional e perfurando sua luva de procedimento na região da palma da mão esquerda.</p>
+        <p><strong>Achados na Inspeção de Higiene Ocupacional:</strong></p>
+        <ul>
+          <li>A profissional utilizava apenas luvas de procedimento de látex e jaleco de manga curta. Não utilizava óculos de proteção ou protetor facial.</li>
+          <li>A manipulação ocorria em bancada aberta, sem o uso de **Cabine de Segurança Biológica (CSB)**.</li>
+          <li>O recipiente rígido para descarte de perfurocortantes (caixa amarela) estava com o volume preenchido acima do limite de segurança (100% cheio).</li>
+          <li>A profissional não soube informar se sua carteira de vacinação contra a Hepatite B estava atualizada e não havia registro do protocolo pós-exposição imediato no setor.</li>
+        </ul>
+      </section>
+
+      <!-- Perguntas / Análise de Risco -->
+      <section class="questions-section">
+        
+        <div class="question-card">
+          <h3>1. Classificação dos Agentes Biológicos</h3>
+          <label for="q1">Com base nos patógenos citados (*Vírus da Hepatite B* e *Mycobacterium tuberculosis*), classifique-os quanto à **Classe de Risco Biológico (Classes 1 a 4)**. Justifique sua resposta considerando o grau de contágio e a gravidade das infecções.</label>
+          <textarea id="q1" class="no-print" placeholder="Escreva sua análise aqui..." required></textarea>
+          <div class="print-only-text" id="q1_print"></div>
+        </div>
+
+        <div class="question-card">
+          <h3>2. Falhas de Biossegurança e Equipamentos de Proteção</h3>
+          <label for="q2">Identifique as principais falhas relativas ao uso de **EPCs (Equipamentos de Proteção Coletiva)** e **EPIs (Equipamentos de Proteção Individual)** descritas no caso, citando os itens exigidos pela **NR-32**.</label>
+          <textarea id="q2" class="no-print" placeholder="Escreva sua análise aqui..." required></textarea>
+          <div class="print-only-text" id="q2_print"></div>
+        </div>
+
+        <div class="question-card">
+          <h3>3. Gerenciamento de Resíduos Perfurocortantes</h3>
+          <label for="q3">Qual a irregularidade encontrada no recipiente de perfurocortantes? Qual é o limite máximo permitido de preenchimento e quais as implicações dessa falha para a Higiene Ocupacional?</label>
+          <textarea id="q3" class="no-print" placeholder="Escreva sua análise aqui..." required></textarea>
+          <div class="print-only-text" id="q3_print"></div>
+        </div>
+
+        <div class="question-card">
+          <h3>4. Plano de Ação e Medidas Preventivas/Corretivas</h3>
+          <label for="q4">Como Técnico(a) em Segurança do Trabalho, elabore um **Plano de Ação Imediato e Preventivo** para este laboratório. Inclua medidas vacinais, procedimentos pós-acidente com material biológico e adequações operacionais.</label>
+          <textarea id="q4" class="no-print" placeholder="Escreva sua análise aqui..." required></textarea>
+          <div class="print-only-text" id="q4_print"></div>
+        </div>
+
+      </section>
+
+      <!-- Ações -->
+      <div class="actions">
+        <button type="button" class="btn-submit" onclick="generatePDFReport()">Gerar Relatório (PDF)</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // Preenche a data atual por padrão
+    document.getElementById('activityDate').valueAsDate = new Date();
+
+    function generatePDFReport() {
+      const name = document.getElementById('studentName').value.trim();
+      const turma = document.getElementById('studentTurma').value.trim();
+      const q1 = document.getElementById('q1').value.trim();
+      const q2 = document.getElementById('q2').value.trim();
+      const q3 = document.getElementById('q3').value.trim();
+      const q4 = document.getElementById('q4').value.trim();
+
+      if (!name || !turma || !q1 || !q2 || !q3 || !q4) {
+        alert('Por favor, preencha o seu Nome, Turma e todas as respostas antes de gerar o relatório!');
+        return;
+      }
+
+      // Copia o texto digitado nas textareas para as divs de impressão
+      document.getElementById('q1_print').innerText = q1;
+      document.getElementById('q2_print').innerText = q2;
+      document.getElementById('q3_print').innerText = q3;
+      document.getElementById('q4_print').innerText = q4;
+
+      // Executa a caixa de diálogo de impressão do navegador (permitindo Salvar como PDF)
+      window.print();
+    }
+  </script>
+</body>
+</html>
