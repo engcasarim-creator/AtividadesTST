@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atividade Prática: Ergonomia Física e Biomecânica Ocupacional</title>
+  <style>
+    :root {
+      --primary: #0f766e;
+      --primary-hover: #115e59;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #134e4a;
+      --text-dark: #1e293b;
+      --border: #cbd5e1;
+      --accent: #c2410c;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-dark);
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    header {
+      border-bottom: 3px solid var(--primary);
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+
+    header h1 {
+      color: var(--primary);
+      font-size: 1.8rem;
+      margin-bottom: 5px;
+    }
+
+    header p {
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .student-info {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 15px;
+      background: #f1f5f9;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 25px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      font-weight: bold;
+      font-size: 0.85rem;
+      margin-bottom: 5px;
+      color: #334155;
+    }
+
+    .form-group input, .form-group textarea {
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.95rem;
+    }
+
+    .case-study {
+      background-color: #fff7ed;
+      border-left: 5px solid var(--accent);
+      padding: 20px;
+      border-radius: 4px;
+      margin-bottom: 30px;
+    }
+
+    .case-study h2 {
+      color: #9a3412;
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+    }
+
+    .case-study p {
+      margin-bottom: 10px;
+      font-size: 0.98rem;
+      color: #431407;
+    }
+
+    .case-study ul {
+      margin-left: 20px;
+      margin-bottom: 10px;
+      color: #431407;
+    }
+
+    .questions-section {
+      margin-bottom: 30px;
+    }
+
+    .question-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .question-card h3 {
+      color: var(--primary);
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+
+    .question-card label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .actions {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .btn-submit {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      box-shadow: 0 4px 6px rgba(15, 118, 110, 0.2);
+    }
+
+    .btn-submit:hover {
+      background-color: var(--primary-hover);
+    }
+
+    /* Estilização de Impressão / PDF */
+    @media print {
+      body {
+        background-color: #ffffff;
+        padding: 0;
+      }
+
+      .container {
+        box-shadow: none;
+        padding: 0;
+        max-width: 100%;
+      }
+
+      .actions {
+        display: none;
+      }
+
+      .case-study {
+        border-left: 3px solid #000;
+        background-color: #f9f9f9;
+      }
+
+      textarea, input {
+        border: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+      }
+
+      textarea {
+        min-height: auto;
+      }
+
+      .print-only-text {
+        display: block !important;
+        white-space: pre-wrap;
+        font-family: inherit;
+        font-size: 0.95rem;
+        margin-top: 5px;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+    }
+
+    .print-only-text {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Curso Técnico em Segurança do Trabalho</h1>
+      <p>Disciplina: Higiene Ocupacional | Módulo: Ergonomia Física e NR-17</p>
+    </header>
+
+    <form id="activityForm">
+      <!-- Identificação do Aluno -->
+      <div class="student-info">
+        <div class="form-group">
+          <label for="studentName">Nome do Aluno(a):</label>
+          <input type="text" id="studentName" required placeholder="Digite seu nome completo">
+        </div>
+        <div class="form-group">
+          <label for="studentTurma">Turma:</label>
+          <input type="text" id="studentTurma" required placeholder="Ex: TST-2026">
+        </div>
+        <div class="form-group">
+          <label for="activityDate">Data:</label>
+          <input type="date" id="activityDate" required>
+        </div>
+      </div>
+
+      <!-- Estudo de Caso -->
+      <section class="case-study">
+        <h2>Estudo de Caso: Análise Biomecânica e Postural em Linha de Embalagem Industrial</h2>
+        <p><strong>Cenário:</strong> Na linha de embalagem final da empresa <em>AgroMetal Indústria S.A.</em>, o operador Carlos atua no setor de paletização manual de caixas de peças agrícolas. A jornada de trabalho é de 8 horas diárias, com apenas uma pausa de 60 minutos para almoço.</p>
+        <p>O ciclo de trabalho consiste em pegar caixas de papelão pesando <strong>18 kg</strong> vindas de uma esteira rolante posicionada a <strong>50 cm do piso</strong> (exigindo flexão acentuada do tronco superior a 60°), girar o tronco em 90° sem mover os pés e empilhar as caixas em um palete até a altura máxima de <strong>1,80 m</strong> (exigindo elevação dos braços acima da linha dos ombros).</p>
+        <p><strong>Dados Quantitativos e Operacionais:</strong></p>
+        <ul>
+          <li><strong>Frequência de Movimentação:</strong> 6 caixas por minuto (cerca de 2.880 caixas/dia, totalizando mais de 50 toneladas movimentadas por operador/dia).</li>
+          <li><strong>Caráter do Trabalho:</strong> Realizado 100% na postura em pé, sobre piso rígido de concreto, sem tapete antifadiga ou assentos de descanso próximos.</li>
+          <li><strong>Queixas Clínicas:</strong> O serviço médico interno registrou elevado índice de absenteísmo no setor por dor lombar acentuada (lombalgia) e síndrome do manguito rotador (ombros).</li>
+          <li><strong>Arranjo do Posto:</strong> O espaço físico ao redor da esteira é estreito, impedindo a rotação dos pés durante o giro com a carga. Não há equipamentos auxiliares de elevação ou transporte.</li>
+        </ul>
+      </section>
+
+      <!-- Perguntas / Análise de Risco -->
+      <section class="questions-section">
+        
+        <div class="question-card">
+          <h3>1. Análise Biomecânica e Sobrecarga Musculoesquelética</h3>
+          <label for="q1">Identifique os principais fatores de risco biomecânicos e posturais presentes no posto de trabalho do operador Carlos (flexão/torção do tronco, alcance vertical/horizontal, repetitividade e peso). Explicite quais estruturas anatômicas/articulares sofrem maior sobrecarga.</label>
+          <textarea id="q1" class="no-print" placeholder="Escreva sua análise biomecânica aqui..." required></textarea>
+          <div class="print-only-text" id="q1_print"></div>
+        </div>
+
+        <div class="question-card">
+          <h3>2. Enquadramento e Requisitos da NR-17 (Ergonomia)</h3>
+          <label for="q2">Com base na NR-17 (Anexo I - Levantamento, Transporte e Manuseio Individual de Cargas / Arranjo do Posto), quais irregularidades normativas estão sendo cometidas no que se refere ao limite de carga, altura de pega, repetitividade e pausas de descanso?</label>
+          <textarea id="q2" class="no-print" placeholder="Escreva sua análise normativa aqui..." required></textarea>
+          <div class="print-only-text" id="q2_print"></div>
+        </div>
+
+        <div class="question-card">
+          <h3>3. Adequações Ergonômicas de Engenharia no Posto de Trabalho</h3>
+          <label for="q3">Proponha melhorias e modificações no arranjo físico do posto de trabalho (layout, esteira, paletização, equipamentos de auxílio mecânico) para eliminar ou reduzir as posturas extremas de flexão de tronco e elevação de braços.</label>
+          <textarea id="q3" class="no-print" placeholder="Escreva as propostas de engenharia/layout aqui..." required></textarea>
+          <div class="print-only-text" id="q3_print"></div>
+        </div>
+
+        <div class="question-card">
+          <h3>4. Medidas Organizacionais e Administrativas</h3>
+          <label for="q4">Elabore propostas de medidas organizacionais (pausas térmicas/ergonômicas, rodízio de tarefas, ginástica laboral, treinamentos de manuseio seguro) para complementar as alterações físicas do posto de trabalho.</label>
+          <textarea id="q4" class="no-print" placeholder="Escreva as medidas organizacionais aqui..." required></textarea>
+          <div class="print-only-text" id="q4_print"></div>
+        </div>
+
+      </section>
+
+      <!-- Ações -->
+      <div class="actions">
+        <button type="button" class="btn-submit" onclick="generatePDFReport()">Gerar Relatório (PDF)</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // Preenche a data atual por padrão
+    document.getElementById('activityDate').valueAsDate = new Date();
+
+    function generatePDFReport() {
+      const name = document.getElementById('studentName').value.trim();
+      const turma = document.getElementById('studentTurma').value.trim();
+      const q1 = document.getElementById('q1').value.trim();
+      const q2 = document.getElementById('q2').value.trim();
+      const q3 = document.getElementById('q3').value.trim();
+      const q4 = document.getElementById('q4').value.trim();
+
+      if (!name || !turma || !q1 || !q2 || !q3 || !q4) {
+        alert('Por favor, preencha o seu Nome, Turma e todas as respostas antes de gerar o relatório!');
+        return;
+      }
+
+      // Copia o texto digitado nas textareas para as divs de impressão
+      document.getElementById('q1_print').innerText = q1;
+      document.getElementById('q2_print').innerText = q2;
+      document.getElementById('q3_print').innerText = q3;
+      document.getElementById('q4_print').innerText = q4;
+
+      // Executa a caixa de diálogo de impressão do navegador (permitindo Salvar como PDF)
+      window.print();
+    }
+  </script>
+</body>
+</html>
