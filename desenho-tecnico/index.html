@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prancheta Prática: Desenho Técnico Ocupacional</title>
+  <style>
+    :root {
+      --primary: #1e293b;
+      --primary-hover: #334155;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --border: #cbd5e1;
+      --accent: #2563eb;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    header {
+      border-bottom: 3px solid var(--primary);
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+
+    header h1 {
+      color: var(--primary);
+      font-size: 1.8rem;
+      margin-bottom: 5px;
+    }
+
+    header p {
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .student-info {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 15px;
+      background: #f1f5f9;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 25px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      font-weight: bold;
+      font-size: 0.85rem;
+      margin-bottom: 5px;
+      color: #334155;
+    }
+
+    .form-group input, .form-group textarea, .form-group select {
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.95rem;
+    }
+
+    .case-study {
+      background-color: #eff6ff;
+      border-left: 5px solid var(--accent);
+      padding: 20px;
+      border-radius: 4px;
+      margin-bottom: 30px;
+    }
+
+    .case-study h2 {
+      color: #1e40af;
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+    }
+
+    .case-study p {
+      margin-bottom: 10px;
+      font-size: 0.98rem;
+      color: #1e3a8a;
+    }
+
+    .question-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .question-card h3 {
+      color: var(--primary);
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    /* Barra de Ferramentas da Prancheta */
+    .canvas-container {
+      margin-top: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .canvas-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 12px;
+      width: 100%;
+      background: #f1f5f9;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .toolbar-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .toolbar-group label {
+      font-size: 0.85rem;
+      font-weight: bold;
+      color: #475569;
+    }
+
+    canvas {
+      border: 2px solid #64748b;
+      background-color: #ffffff;
+      cursor: crosshair;
+      border-radius: 6px;
+      touch-action: none;
+    }
+
+    .btn-clear {
+      background-color: #ef4444;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-left: auto;
+    }
+
+    .btn-clear:hover {
+      background-color: #dc2626;
+    }
+
+    .actions {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .btn-submit {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-submit:hover {
+      background-color: var(--primary-hover);
+    }
+
+    /* Ajustes para Impressão e Gerador de PDF */
+    @media print {
+      body { background-color: #ffffff; padding: 0; }
+      .container { box-shadow: none; padding: 0; max-width: 100%; }
+      .actions, .canvas-toolbar, .no-print { display: none !important; }
+      textarea, input { border: none !important; background: transparent !important; padding: 0 !important; }
+      .print-only-text { display: block !important; white-space: pre-wrap; font-size: 0.95rem; margin-top: 5px; }
+      #drawnImagePrint { display: block !important; max-width: 100%; border: 1px solid #000; margin-top: 10px; }
+    }
+
+    .print-only-text, #drawnImagePrint { display: none; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Curso Técnico em Segurança do Trabalho</h1>
+      <p>Disciplina: Desenho Técnico | Prática: Layout do Setor e Sinalização de Segurança</p>
+    </header>
+
+    <form id="activityForm">
+      <!-- Dados do Aluno -->
+      <div class="student-info">
+        <div class="form-group">
+          <label for="studentName">Nome do Aluno(a):</label>
+          <input type="text" id="studentName" required placeholder="Digite seu nome completo">
+        </div>
+        <div class="form-group">
+          <label for="studentTurma">Turma:</label>
+          <input type="text" id="studentTurma" required placeholder="Ex: TST-2026">
+        </div>
+        <div class="form-group">
+          <label for="activityDate">Data:</label>
+          <input type="date" id="activityDate" required>
+        </div>
+      </div>
+
+      <!-- Orientação Técnica -->
+      <section class="case-study">
+        <h2>Desafio Técnico de Desenho e Dimensionamento</h2>
+        <p><strong>Proposta:</strong> Utilizando a prancheta com malha quadriculada (onde <strong>1 quadrado = 1 metro</strong>), elabore o layout técnico de um setor industrial indicando:</p>
+        <ul>
+          <li><strong>Paredes/Estrutura:</strong> Use retângulos/quadrados ou linha livre.</li>
+          <li><strong>Máquinas e Postos de Trabalho:</strong> Representação em formas geométricas.</li>
+          <li><strong>Equipamentos de Emergência:</strong> Círculos ou marcadores para extintores/saídas.</li>
+        </ul>
+      </section>
+
+      <!-- Prancheta Interativa com Malha e Formas -->
+      <section class="questions-section">
+        <div class="question-card">
+          <h3>1. Prancheta Técnica Digital</h3>
+          <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 10px;">Escala visual: Cada quadrícula cinza equivale a 1m x 1m.</p>
+          
+          <div class="canvas-container">
+            <div class="canvas-toolbar no-print">
+              
+              <div class="toolbar-group">
+                <label for="toolSelect">Ferramenta:</label>
+                <select id="toolSelect">
+                  <option value="free">✏️ Traço Livre (Lápis)</option>
+                  <option value="rectangle">▭ Retângulo</option>
+                  <option value="square">□ Quadrado</option>
+                  <option value="circle">◯ Círculo</option>
+                  <option value="eraser">🧼 Borracha</option>
+                </select>
+              </div>
+
+              <div class="toolbar-group">
+                <label for="lineWidth">Espessura:</label>
+                <select id="lineWidth">
+                  <option value="2">Fina (1px / Cotas)</option>
+                  <option value="4" selected>Média (2px / Máquinas)</option>
+                  <option value="7">Grossa (4px / Paredes)</option>
+                </select>
+              </div>
+
+              <button type="button" class="btn-clear" onclick="resetCanvasWithGrid()">Limpar Tudo</button>
+            </div>
+            
+            <!-- Tela de Desenho -->
+            <canvas id="drawingCanvas" width="800" height="450" class="no-print"></canvas>
+            
+            <!-- Renderização final para o relatório em PDF -->
+            <img id="drawnImagePrint" alt="Desenho Técnico do Aluno">
+          </div>
+        </div>
+
+        <div class="question-card">
+          <h3>2. Memorial Descritivo e Dimensionamento</h3>
+          <label for="q1">Descreva as dimensões estimadas (com base na malha de 1m) e a justificativa técnica para a disposição dos postos e equipamentos de emergência:</label>
+          <textarea id="q1" class="no-print" placeholder="Digite seu memorial descritivo aqui..." required></textarea>
+          <div class="print-only-text" id="q1_print"></div>
+        </div>
+      </section>
+
+      <div class="actions">
+        <button type="button" class="btn-submit" onclick="generatePDFReport()">Gerar Relatório com Desenho (PDF)</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // Configura data atual
+    document.getElementById('activityDate').valueAsDate = new Date();
+
+    // Bloqueia colar no memorial descritivo
+    document.querySelectorAll('textarea').forEach(textarea => {
+      textarea.addEventListener('paste', function(e) {
+        e.preventDefault();
+        alert('Atenção: A função de colar (Ctrl+V) está desativada para esta atividade.');
+      });
+    });
+
+    // Variáveis da Prancheta
+    const canvas = document.getElementById('drawingCanvas');
+    const ctx = canvas.getContext('2d');
+    const toolSelect = document.getElementById('toolSelect');
+    const lineWidthSelect = document.getElementById('lineWidth');
+
+    let isDrawing = false;
+    let startX = 0;
+    let startY = 0;
+    let snapshot = null; // Guarda o estado da imagem para fazer o preview sem borrar
+
+    // Função para desenhar a Malha Quadriculada (Grid)
+    function drawGrid() {
+      const gridSize = 20; // 20px = 1 metro em escala proporcional
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.beginPath();
+      ctx.strokeStyle = "#e2e8f0"; // Linhas de grid cinza claro
+      ctx.lineWidth = 1;
+
+      // Linhas Verticais
+      for (let x = 0; x <= canvas.width; x += gridSize) {
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+      }
+      // Linhas Horizontais
+      for (let y = 0; y <= canvas.height; y += gridSize) {
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+      }
+      ctx.stroke();
+    }
+
+    // Inicializa a malha
+    drawGrid();
+
+    function resetCanvasWithGrid() {
+      if (confirm("Tem certeza que deseja limpar todo o desenho?")) {
+        drawGrid();
+      }
+    }
+
+    function getCoordinates(e) {
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      return {
+        x: clientX - rect.left,
+        y: clientY - rect.top
+      };
+    }
+
+    function startDrawing(e) {
+      isDrawing = true;
+      const pos = getCoordinates(e);
+      startX = pos.x;
+      startY = pos.y;
+
+      // Salva o estado atual do canvas para permitir o preview dinâmico ao arrastar
+      snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+      if (toolSelect.value === 'free' || toolSelect.value === 'eraser') {
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+      }
+    }
+
+    function draw(e) {
+      if (!isDrawing) return;
+      e.preventDefault();
+
+      const pos = getCoordinates(e);
+      const currentX = pos.x;
+      const currentY = pos.y;
+      const selectedTool = toolSelect.value;
+      const lineW = parseInt(lineWidthSelect.value);
+
+      if (selectedTool === 'free') {
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = lineW;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.lineTo(currentX, currentY);
+        ctx.stroke();
+      } else if (selectedTool === 'eraser') {
+        // A borracha redesenha o grid na região apagada
+        const eraserSize = lineW * 5;
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(currentX, currentY, eraserSize / 2, 0, Math.PI * 2);
+        ctx.clip();
+        drawGrid(); // Restaura fundo quadriculado no recorte
+        ctx.restore();
+      } else {
+        // Restaura a imagem gravada no início do clique para não deixar rastros do movimento do mouse
+        ctx.putImageData(snapshot, 0, 0);
+
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = lineW;
+        ctx.beginPath();
+
+        if (selectedTool === 'rectangle') {
+          ctx.strokeRect(startX, startY, currentX - startX, currentY - startY);
+        } else if (selectedTool === 'square') {
+          const side = Math.max(Math.abs(currentX - startX), Math.abs(currentY - startY));
+          const signX = currentX >= startX ? 1 : -1;
+          const signY = currentY >= startY ? 1 : -1;
+          ctx.strokeRect(startX, startY, side * signX, side * signY);
+        } else if (selectedTool === 'circle') {
+          const radius = Math.sqrt(Math.pow(currentX - startX, 2) + Math.pow(currentY - startY, 2));
+          ctx.arc(startX, startY, radius, 0, 2 * Math.PI);
+          ctx.stroke();
+        }
+      }
+    }
+
+    function stopDrawing() {
+      isDrawing = false;
+    }
+
+    // Eventos do Mouse
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
+
+    // Eventos para Dispositivos Touch
+    canvas.addEventListener('touchstart', startDrawing);
+    canvas.addEventListener('touchmove', draw);
+    canvas.addEventListener('touchend', stopDrawing);
+
+    // Relatório PDF
+    function generatePDFReport() {
+      const name = document.getElementById('studentName').value.trim();
+      const turma = document.getElementById('studentTurma').value.trim();
+      const q1 = document.getElementById('q1').value.trim();
+
+      if (!name || !turma || !q1) {
+        alert('Por favor, preencha o Nome, Turma e o Memorial Descritivo!');
+        return;
+      }
+
+      // Converte a prancheta para imagem com resolução perfeita
+      const dataURL = canvas.toDataURL('image/png');
+      const drawnImage = document.getElementById('drawnImagePrint');
+      drawnImage.src = dataURL;
+
+      document.getElementById('q1_print').innerText = q1;
+      window.print();
+    }
+  </script>
+</body>
+</html>
