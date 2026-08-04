@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atividade Prática: Ergonomia Cognitiva e Carga Mental</title>
+  <style>
+    :root {
+      --primary: #1e293b;
+      --primary-hover: #334155;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --border: #cbd5e1;
+      --accent: #0284c7;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      border: 1px solid var(--border);
+    }
+
+    header {
+      border-bottom: 3px solid var(--primary);
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+
+    header h1 {
+      color: var(--primary);
+      font-size: 1.8rem;
+      margin-bottom: 5px;
+    }
+
+    header p {
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .student-info {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 15px;
+      background: #f1f5f9;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 25px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      font-weight: bold;
+      font-size: 0.85rem;
+      margin-bottom: 5px;
+      color: #334155;
+    }
+
+    .form-group input {
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.95rem;
+    }
+
+    .theory-section {
+      background-color: #f0f9ff;
+      border-left: 5px solid var(--accent);
+      padding: 20px;
+      border-radius: 4px;
+      margin-bottom: 30px;
+    }
+
+    .theory-section h2 {
+      color: #0369a1;
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+    }
+
+    .theory-section p {
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+      color: #0c4a6e;
+      text-align: justify;
+    }
+
+    .questions-section {
+      margin-bottom: 30px;
+    }
+
+    .question-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .question-card h3 {
+      color: var(--primary);
+      font-size: 1.05rem;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .options-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .option-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+      font-size: 0.93rem;
+      color: #334155;
+    }
+
+    .option-label:hover {
+      background-color: #f8fafc;
+      border-color: #94a3b8;
+    }
+
+    .option-label input[type="radio"] {
+      margin-top: 3px;
+    }
+
+    .actions {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .btn-submit {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: background 0.2s;
+    }
+
+    .btn-submit:hover {
+      background-color: var(--primary-hover);
+    }
+
+    /* Formatação para Impressão e PDF */
+    @media print {
+      body { background-color: #ffffff; padding: 0; }
+      .container { box-shadow: none; padding: 0; max-width: 100%; border: none; }
+      .actions, .no-print { display: none !important; }
+      .option-label { border: none; padding: 3px 0; }
+      .option-label input[type="radio"] { display: none; }
+      .option-selected-print { font-weight: bold; color: #000; text-decoration: underline; }
+    }
+
+    .print-only-summary {
+      display: none;
+    }
+
+    @media print {
+      .print-only-summary {
+        display: block !important;
+        margin-top: 20px;
+        padding: 15px;
+        border: 1px solid #000;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Curso Técnico em Segurança do Trabalho</h1>
+      <p>Disciplina: Ergonomia (NR-17) | Ergonomia Cognitiva e Carga Mental</p>
+    </header>
+
+    <form id="activityForm">
+      <!-- Identificação do Aluno -->
+      <div class="student-info">
+        <div class="form-group">
+          <label for="studentName">Nome do Aluno(a):</label>
+          <input type="text" id="studentName" required placeholder="Digite seu nome completo">
+        </div>
+        <div class="form-group">
+          <label for="studentTurma">Turma:</label>
+          <input type="text" id="studentTurma" required placeholder="Ex: TST-2026">
+        </div>
+        <div class="form-group">
+          <label for="activityDate">Data:</label>
+          <input type="date" id="activityDate" required>
+        </div>
+      </div>
+
+      <!-- Texto Orientador / Estudo de Caso -->
+      <section class="theory-section">
+        <h2>Estudo de Caso: Sala de Controle do Centro de Operações Industriais</h2>
+        <p>
+          Em um Centro de Controle Operacional (CCO) automatizado, três operadores monitoram continuamente 12 telas com dados em tempo real sobre vazões, pressões, alarmes sonoros e dados de videomonitoramento. Nos horários de pico, a incidência de múltiplos alarmes simultâneos (falsa sobrecarga de alarmes) tem gerado relatórios de cansaço mental extremo, atraso na tomada de decisões estratégicas e falhas na detecção de anomalias críticas.
+        </p>
+        <p>
+          A <strong>Ergonomia Cognitiva</strong> estuda como os processos mentais (percepção, memória, raciocínio e resposta motora) afetam as interações entre seres humanos e outros elementos de um sistema, buscando otimizar o bem-estar humano e o desempenho global do trabalho informatizado.
+        </p>
+      </section>
+
+      <!-- Questões de Múltipla Escolha -->
+      <section class="questions-section">
+        
+        <!-- Questão 1 -->
+        <div class="question-card">
+          <h3>1. Em ambientes de alto fluxo de informação (como salas de controle), a incidência excessiva de alarmes visuais e sonoros simultâneos gera um fenômeno conhecido na Ergonomia Cognitiva como "cegueira por alarme" ou fadiga de alarmes. Qual é o principal impacto desse fenômeno nos processos de atenção e tomada de decisão do operador?</h3>
+          <div class="options-group">
+            <label class="option-label"><input type="radio" name="q1" value="A" required> A) Aumento da velocidade na tomada de decisão devido ao estado contínuo de alerta e hipervigilância.</label>
+            <label class="option-label"><input type="radio" name="q1" value="B"> B) Elevação da memória de curto prazo, permitindo processar múltiplos alarmes sem perda de foco.</label>
+            <label class="option-label"><input type="radio" name="q1" value="C"> C) Sobrecarga da atenção seletiva, levando à dessensibilização do operador e ao aumento do risco de ignorar alarmes críticos reais.</label>
+            <label class="option-label"><input type="radio" name="q1" value="D"> D) Redução natural do estresse ocupacional, já que o operador se habitua ao ruído constante.</label>
+            <label class="option-label"><input type="radio" name="q1" value="E"> E) Eliminação completa da necessidade de intervenção humana, descentralizando a responsabilidade.</label>
+          </div>
+        </div>
+
+        <!-- Questão 2 -->
+        <div class="question-card">
+          <h3>2. A Interface Homem-Máquina (IHM) desempenha um papel determinante na Carga Mental de Trabalho (CMT). Ao projetar sistemas informatizados sob a ótica da NR-17 e da Ergonomia Cognitiva, qual princípio de design de interface contribui DIRETAMENTE para a redução do estresse cognitivo?</h3>
+          <div class="options-group">
+            <label class="option-label"><input type="radio" name="q2" value="A" required> A) Apresentar o maior número possível de dados brutos na mesma tela para evitar navegação entre menus.</label>
+            <label class="option-label"><input type="radio" name="q2" value="B"> B) Hierarquização clara das informações, uso padronizado de cores/sinais e filtragem de dados irrelevantes para diminuir a carga de processamento mental.</label>
+            <label class="option-label"><input type="radio" name="q2" value="C"> C) Utilização exclusiva de códigos numéricos complexos em vez de representações gráficas visuais.</label>
+            <label class="option-label"><input type="radio" name="q2" value="D"> D) Alteração constante e aleatória do layout das telas para manter o operador em vigilância ativa e evitar o tédio.</label>
+            <label class="option-label"><input type="radio" name="q2" value="E"> E) Substituição de todos os alertas visuais por sinais sonoros de alta frequência e volume contínuo.</label>
+          </div>
+        </div>
+
+        <!-- Questão 3 -->
+        <div class="question-card">
+          <h3>3. Durante turnos extensos de trabalho informatizado em salas de monitoramento, a demanda constante de Atenção Sustentada sob pressão de tempo pode levar ao esgotamento cognitivo. Assinale a alternativa que apresenta uma medida de organização do trabalho recomendada para mitigar esse estresse:</h3>
+          <div class="options-group">
+            <label class="option-label"><input type="radio" name="q3" value="A" required> A) Eliminação total de pausas para evitar a quebra do fluxo de raciocínio lógico do operador.</label>
+            <label class="option-label"><input type="radio" name="q3" value="B"> B) Introdução de pausas curtas e regulares fora do posto de monitoramento e rodízio de tarefas para recuperação dos recursos de atenção.</label>
+            <label class="option-label"><input type="radio" name="q3" value="C"> C) Aumento da jornada diária de trabalho para compensar a lentidão causada pela fadiga mental.</label>
+            <label class="option-label"><input type="radio" name="q3" value="D"> D) Atribuição do monitoramento individual de duas salas de controle simultâneas para otimizar a produtividade.</label>
+            <label class="option-label"><input type="radio" name="q3" value="E"> E) Proibição de interações entre os operadores do mesmo turno para focar exclusivamente nas telas.</label>
+          </div>
+        </div>
+
+        <!-- Questão 4 -->
+        <div class="question-card">
+          <h3>4. Na avaliação do trabalho mental e da tomada de decisão, o estresse cognitivo crônico decorrente do desequilíbrio entre as exigências da tarefa e a capacidade de resposta do operador pode resultar em impactos à saúde. Qual das opções descreve um efeito fisiológico/comportamental típico da sobrecarga mental prolongada?</h3>
+          <div class="options-group">
+            <label class="option-label"><input type="radio" name="q4" value="A" required> A) Redução do tempo de reação aos estímulos e aumento da flexibilidade mental.</label>
+            <label class="option-label"><input type="radio" name="q4" value="B"> B) Aumento permanente da capacidade de memória de trabalho e raciocínio analítico.</label>
+            <label class="option-label"><input type="radio" name="q4" value="C"> C) Aparecimento de distúrbios do sono, irritabilidade, lapsos de memória e aumento do índice de erros humanos operacionais.</label>
+            <label class="option-label"><input type="radio" name="q4" value="D"> D) Redução imediata de lesões por esforços repetitivos (LER/DORT) no sistema musculoesquelético.</label>
+            <label class="option-label"><input type="radio" name="q4" value="E"> E) Estabilização dos níveis de cortisol e imunidade celular aprimorada.</label>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Botão de Ação -->
+      <div class="actions">
+        <button type="button" class="btn-submit" onclick="generatePDFReport()">Enviar Respostas e Gerar PDF</button>
+      </div>
+
+    </form>
+  </div>
+
+  <script>
+    // Cole a URL da sua implantação do Google Apps Script
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyiEAnTOcNxAslu1DbB2CxE9ooiK8HQ-YIa4eAnOKTu2L5qvb9xSMNT5M0Bg6_gEa_P/exec';
+
+    // Preenche a data atual por padrão
+    document.getElementById('activityDate').valueAsDate = new Date();
+
+    // Função para capturar a opção selecionada nos rádios
+    function getSelectedOption(name) {
+      const selected = document.querySelector(`input[name="${name}"]:checked`);
+      return selected ? selected.value : '';
+    }
+
+    async function generatePDFReport() {
+      const name = document.getElementById('studentName').value.trim();
+      const turma = document.getElementById('studentTurma').value.trim();
+      const date = document.getElementById('activityDate').value;
+
+      const q1 = getSelectedOption('q1');
+      const q2 = getSelectedOption('q2');
+      const q3 = getSelectedOption('q3');
+      const q4 = getSelectedOption('q4');
+
+      if (!name || !turma || !q1 || !q2 || !q3 || !q4) {
+        alert('Por favor, preencha o seu Nome, Turma e responda a TODAS as 4 questões de múltipla escolha!');
+        return;
+      }
+
+      const btnSubmit = document.querySelector('.btn-submit');
+      btnSubmit.disabled = true;
+      btnSubmit.innerText = "Enviando respostas...";
+
+      const payload = {
+        nome: name,
+        turma: turma,
+        dataAtividade: date,
+        q1: `Questão 1: (${q1})`,
+        q2: `Questão 2: (${q2})`,
+        q3: `Questão 3: (${q3})`,
+        q4: `Questão 4: (${q4})`
+      };
+
+      try {
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
+        });
+
+        alert('✅ Suas respostas foram registradas na planilha do professor!');
+        window.print();
+
+      } catch (error) {
+        console.error('Erro ao enviar:', error);
+        alert('⚠️ Houve um problema ao registrar online, mas o relatório em PDF será gerado normalmente.');
+        window.print();
+      } finally {
+        btnSubmit.disabled = false;
+        btnSubmit.innerText = "Enviar Respostas e Gerar PDF";
+      }
+    }
+  </script>
+</body>
+</html>
