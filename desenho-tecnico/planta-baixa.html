@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laboratório de Análise de Projetos - Segurança do Trabalho</title>
+    <!-- Importação da biblioteca jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         :root {
             --primary: #1e3a8a;
@@ -86,6 +88,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .badge-group {
+            display: flex;
+            gap: 8px;
         }
 
         .badge {
@@ -97,12 +106,16 @@
             font-weight: bold;
         }
 
-        /* Simulação Gráfica da Planta Baixa */
+        .badge-scale {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
         .blueprint-viewer {
-            background: #0f172a;
-            border: 2px dashed #475569;
+            background: #0b0f19;
+            border: 2px solid #334155;
             border-radius: 8px;
-            height: 220px;
+            height: 280px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -117,29 +130,38 @@
             width: 100%;
             height: 100%;
             background-image: 
-                linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+                linear-gradient(rgba(56, 189, 248, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
             background-size: 20px 20px;
         }
 
-        .blueprint-content {
+        .blueprint-svg-container {
             z-index: 2;
-            color: #38bdf8;
+            width: 100%;
+            height: 180px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .blueprint-svg-container svg {
+            max-height: 170px;
+            max-width: 95%;
+        }
+
+        .blueprint-caption {
+            z-index: 2;
+            background: rgba(15, 23, 42, 0.9);
+            width: 100%;
+            padding: 8px 15px;
             text-align: center;
-            padding: 15px;
+            border-top: 1px solid #1e293b;
         }
 
-        .blueprint-content svg {
-            width: 50px;
-            height: 50px;
-            margin-bottom: 8px;
-            fill: currentColor;
-        }
-
-        .blueprint-content p {
-            font-family: monospace;
-            font-size: 0.9rem;
-            color: #cbd5e1;
+        .blueprint-caption p {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.85rem;
+            color: #38bdf8;
         }
 
         .form-group {
@@ -153,18 +175,21 @@
             font-size: 0.9rem;
         }
 
-        textarea {
+        textarea, input[type="text"] {
             width: 100%;
             padding: 12px;
             border: 1px solid #cbd5e1;
             border-radius: 8px;
-            resize: vertical;
-            min-height: 80px;
-            font-size: 0.95krem;
+            font-size: 0.95rem;
             transition: border-color 0.2s;
         }
 
-        textarea:focus {
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        textarea:focus, input[type="text"]:focus {
             outline: none;
             border-color: var(--secondary);
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
@@ -191,11 +216,6 @@
 
         button:hover {
             background-color: #1d4ed8;
-        }
-
-        button:disabled {
-            background-color: #94a3b8;
-            cursor: not-allowed;
         }
 
         .nav-buttons {
@@ -226,6 +246,15 @@
             color: #475569;
             border-left: 3px solid var(--accent);
         }
+
+        .student-info-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
@@ -241,14 +270,27 @@
     </div>
 
     <div id="quizContainer">
-        <!-- O conteúdo dinâmico dos exercícios será injetado via JavaScript -->
+        <!-- Conteúdo injetado via JavaScript -->
     </div>
 
     <div class="summary-card" id="summaryCard">
-        <h2>Parabéns! Atividade Concluída 🎯</h2>
-        <p>Você analisou com sucesso todas as 10 plantas baixas e propôs as melhorias de engenharia e segurança necessárias.</p>
-        <p style="margin-top: 15px; font-size: 0.9rem; color: #64748b;">Suas respostas foram registradas na tela. Você pode revisá-las ou exportar o seu relatório de projeto.</p>
-        <button onclick="location.reload()" style="margin-top: 20px;">Reiniciar Atividade</button>
+        <h2>Atividade Concluída com Sucesso! 🎯</h2>
+        <p style="margin-bottom: 20px;">Você analisou todas as 10 plantas baixas. Preencha seus dados acadêmicos abaixo para gerar o relatório oficial em PDF.</p>
+        
+        <div class="student-info-box">
+            <div class="form-group">
+                <label for="studentName">Nome Completo do Aluno:</label>
+                <input type="text" id="studentName" placeholder="Ex: João da Silva">
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+                <label for="studentClass">Turma / Matrícula:</label>
+                <input type="text" id="studentClass" placeholder="Ex: TST-2026 / Matrícula 12345">
+            </div>
+        </div>
+
+        <button id="downloadPdfBtn" style="background-color: var(--success); font-size: 1.1rem; padding: 15px 30px;">📄 Gerar e Abrir Relatório em PDF</button>
+        <br><br>
+        <button onclick="location.reload()" style="background-color: #64748b; font-size: 0.9rem; padding: 8px 15px;">Reiniciar Atividade</button>
     </div>
 </div>
 
@@ -258,71 +300,159 @@
             id: 1,
             titulo: "Planta Baixa 01: Sala de Geradores e Chave Seccionadora",
             norma: "NR-10 / NBR 9077",
+            escala: "Escala 1:50",
             descricaoLayout: "Layout de casa de geradores isolada. A porta de saída abre para o *interior* da sala e o painel elétrico principal está colado ao canto sem área de circulação livre.",
-            dicaTecnica: "Considere o sentido de abertura de portas de emergência em áreas de risco elétrico/incêndio e o espaço mínimo de aproximação de painéis."
+            dicaTecnica: "Considere o sentido de abertura de portas de emergência em áreas de risco elétrico/incêndio e o espaço mínimo de aproximação de painéis.",
+            svgDesenho: `<svg viewBox="0 0 300 150">
+                <rect x="40" y="20" width="220" height="110" fill="none" stroke="#38bdf8" stroke-width="3"/>
+                <path d="M 40 70 L 40 110 A 40 40 0 0 0 80 70 Z" fill="rgba(220,38,38,0.3)" stroke="#dc2626" stroke-dasharray="3"/>
+                <line x1="40" y1="70" x2="40" y2="110" stroke="#fff" stroke-width="4"/>
+                <text x="15" y="95" fill="#dc2626" font-size="10" font-weight="bold">PORTA (IN)</text>
+                <rect x="235" y="30" width="15" height="40" fill="#f59e0b"/>
+                <text x="210" y="85" fill="#f59e0b" font-size="9">Painel sem recuo</text>
+                <rect x="110" y="55" width="70" height="50" fill="#1e293b" stroke="#38bdf8"/>
+                <text x="123" y="83" fill="#38bdf8" font-size="10">GERADOR</text>
+            </svg>`
         },
         {
             id: 2,
             titulo: "Planta Baixa 02: Estoque de Produtos Químicos Inflamáveis",
             norma: "NR-20 / NBR 17505",
+            escala: "Escala 1:75",
             descricaoLayout: "Depósito fechado de solventes sem ventilação cruzada, com apenas uma porta estreita de 0,80m e ausência de bacia de contenção de vazamentos no piso.",
-            dicaTecnica: "Pense na dispersão de vapores inflamáveis, rotas de fuga e contenção ambiental primária."
+            dicaTecnica: "Pense na dispersão de vapores inflamáveis, rotas de fuga e contenção ambiental primária.",
+            svgDesenho: `<svg viewBox="0 0 300 150">
+                <rect x="50" y="25" width="200" height="100" fill="none" stroke="#dc2626" stroke-width="3"/>
+                <text x="70" y="50" fill="#dc2626" font-size="10" font-weight="bold">DEPÓSITO SEM VENTILAÇÃO</text>
+                <circle cx="90" cy="85" r="12" fill="#475569" stroke="#38bdf8"/>
+                <circle cx="120" cy="85" r="12" fill="#475569" stroke="#38bdf8"/>
+                <circle cx="105" cy="105" r="12" fill="#475569" stroke="#38bdf8"/>
+                <text x="150" y="95" fill="#f59e0b" font-size="9">⚠️ Sem bacia de contenção</text>
+                <rect x="250" y="60" width="10" height="30" fill="#fff"/>
+                <text x="235" y="110" fill="#fff" font-size="9">Porta 0.80m</text>
+            </svg>`
         },
         {
             id: 3,
             titulo: "Planta Baixa 03: Setor de Estampagem (Prensas Mecânicas)",
             norma: "NR-12",
+            escala: "Escala 1:50",
             descricaoLayout: "Arranjo físico (Layout) apertado onde o operador fica de costas para a rota principal de empilhadeiras, sem barreiras físicas ou corredores demarcados.",
-            dicaTecnica: "Avalie a separação física entre o tráfego de cargas (veículos) e o fluxo de pedestres/operadores."
+            dicaTecnica: "Avalie a separação física entre o tráfego de cargas (veículos) e o fluxo de pedestres/operadores.",
+            svgDesenho: `<svg viewBox="0 0 300 150">
+                <rect x="30" y="20" width="240" height="110" fill="none" stroke="#38bdf8" stroke-width="2"/>
+                <line x1="30" y1="75" x2="270" y2="75" stroke="#f59e0b" stroke-width="12" stroke-dasharray="8,8"/>
+                <text x="100" y="79" fill="#000" font-size="9" font-weight="bold">TRÁFEGO DE EMPILHADEIRAS</text>
+                <rect x="80" y="30" width="50" height="30" fill="#475569" stroke="#fff"/>
+                <text x="85" y="48" fill="#fff" font-size="9">Prensa 01</text>
+                <circle cx="105" cy="100" r="10" fill="#dc2626"/>
+                <text x="85" y="123" fill="#dc2626" font-size="9">Operador vulnerável</text>
+            </svg>`
         },
         {
             id: 4,
             titulo: "Planta Baixa 04: Escritório Administrativo - Fuga de Incêndio",
             norma: "NBR 9077 (Saídas de Emergência)",
+            escala: "Escala 1:100",
             descricaoLayout: "Pavimento corporativo em formato de 'L' com uma única escada de emergência localizada a mais de 45 metros do extremo oposto e sem sinalização de balizamento.",
-            dicaTecnica: "Analise a distância máxima a ser percorrida até atingir uma saída segura de emergência."
+            dicaTecnica: "Analise a distância máxima a ser percorrida até atingir uma saída segura de emergência.",
+            svgDesenho: `<svg viewBox="0 0 300 150">
+                <path d="M 50 30 L 250 30 L 250 70 L 100 70 L 100 120 L 50 120 Z" fill="none" stroke="#38bdf8" stroke-width="2"/>
+                <text x="120" y="50" fill="#cbd5e1" font-size="9">Área de Estações de Trabalho</text>
+                <rect x="230" y="90" width="30" height="30" fill="#dc2626"/>
+                <text x="195" y="108" fill="#dc2626" font-size="9">> 45m (Distância)</text>
+            </svg>`
         },
         {
             id: 5,
             titulo: "Planta Baixa 05: Laboratório de Análises Químicas",
             norma: "NR-15 / NBR 14748",
+            escala: "Escala 1:25",
             descricaoLayout: "Laboratório com bancadas centrais compridas e apenas uma única via de acesso/saída bloqueada na extremidade por um armário corta-fogo mal posicionado.",
-            dicaTecnica: "Ambientes laboratoriais críticos exigem rotas de fuga desobstruídas em ambas as direções ou saídas duplas."
+            dicaTecnica: "Ambientes laboratoriais críticos exigem rotas de fuga desobstruídas em ambas as direções ou saídas duplas.",
+            svgDesenho: `<svg viewBox="0 0 300 150">
+                <rect x="40" y="25" width="220" height="100" fill="none" stroke="#38bdf8" stroke-width="2"/>
+                <rect x="70" y="50" width="140" height="25" fill="#475569"/>
+                <text x="90" y="67" fill="#fff" font-size="10">Bancada Central</text>
+                <rect x="215" y="50" width="25" height="75" fill="#dc2626"/>
+                <text x="175" y="135" fill="#dc2626" font-size="9">Saída bloqueada por armário</text>
+            </svg>`
         },
         {
             id: 6,
             titulo: "Planta Baixa 06: Caldeiraria e Casa de Vapor",
             norma: "NR-13",
+            escala: "Escala 1:50",
             descricaoLayout: "Instalação de caldeira em recinto confinado subterrâneo, com escada de acesso vertical tipo marinheiro enferrujada e sem painel de comando remoto externo.",
-            dicaTecnica: "Verifique as exigências de insolação, ventilação e posicionamento externo de painéis de controle de caldeiras."
+            dicaTecnica: "Verifique as exigências de insolação, ventilação e posicionamento externo de painéis de controle de caldeiras.",
+            svgDesenho: `<svg viewBox="0 0 300 150">
+                <rect x="60" y="20" width="180" height="110" fill="#1e293b" stroke="#dc2626" stroke-width="2"/>
+                <text x="90" y="45" fill="#dc2626" font-size="10" font-weight="bold">CALDEIRA EM SUBSOLO</text>
+                <ellipse cx="150" cy="85" rx="35" ry="25" fill="#475569" stroke="#f59e0b" stroke-width="2"/>
+                <text x="130" y="88" fill="#fff" font-size="9">VAPOR</text>
+                <line x1="210" y1="30" x2="210" y2="120" stroke="#fff" stroke-width="3" stroke-dasharray="4,2"/>
+                <text x="215" y="80" fill="#fff" font-size="8">Escada vertical</text>
+            </svg>`
         },
         {
             id: 7,
             titulo: "Planta Baixa 07: Cozinha Industrial de Grande Porte",
             norma: "NR-12 / NBR 14518",
+            escala: "Escala 1:50",
             descricaoLayout: "Cozinha com fogões industriais e fritadeiras posicionados diretamente em frente à única porta de saída de serviço, cruzando a área de cocção com a rota de evacuação.",
-            dicaTecnica: "O fluxo de escape não deve cruzar zonas de alto risco térmico ou de queima direta."
+            dicaTecnica: "O fluxo de escape não deve cruzar zonas de alto risco térmico ou de queima direta.",
+            svgDesenho: `<svg viewBox="0 0 300 150">
+                <rect x="40" y="20" width="220" height="110" fill="none" stroke="#38bdf8" stroke-width="2"/>
+                <rect x="110" y="55" width="80" height="40" fill="#dc2626"/>
+                <text x="120" y="78" fill="#fff" font-size="9">Filtros / Fritadeiras</text>
+                <text x="80" y="115" fill="#f59e0b" font-size="9">Caminho de fuga cruza o fogão</text>
+            </svg>`
         },
         {
             id: 8,
             titulo: "Planta Baixa 08: Almoxarifado Vertical com Ponto de Carga",
             norma: "NR-11 / NR-12",
+            escala: "Escala 1:75",
             descricaoLayout: "Corredores de estanterias com largura de 0,90m onde operam simultaneamente carrinhos hidráulicos manuais e paleteiras elétricas de grande porte.",
-            dicaTecnica: "Dimensionamento de corredores em planta baixa para tráfego combinado de equipamentos e operadores."
+            dicaTecnica: "Dimensionamento de corredores em planta baixa para tráfego combinado de equipamentos e operadores.",
+            svgDesenho: `<svg viewBox="0 0 300 150">
+                <rect x="40" y="20" width="220" height="110" fill="none" stroke="#38bdf8" stroke-width="2"/>
+                <rect x="60" y="30" width="40" height="90" fill="#475569"/>
+                <rect x="200" y="30" width="40" height="90" fill="#475569"/>
+                <text x="115" y="75" fill="#dc2626" font-size="10" font-weight="bold">Corredor: 0,90m (Estreito)</text>
+                <line x1="100" y1="75" x2="200" y2="75" stroke="#f59e0b" stroke-width="3" stroke-dasharray="2,2"/>
+            </svg>`
         },
         {
             id: 9,
             titulo: "Planta Baixa 09: Subestação Elétrica Abrigada",
             norma: "NR-10 (Prontuário e Instalações)",
+            escala: "Escala 1:25",
             descricaoLayout: "Sala de transformadores com vão de entrada livre de apenas 70cm e ausência de portas teladas para ventilação forçada ou isolamento contra intrusão acidental.",
-            dicaTecnica: "Atente-se às dimensões mínimas para movimentação de equipamentos pesados e restrição estrita de acesso."
+            dicaTecnica: "Atente-se às dimensões mínimas para movimentação de equipamentos pesados e restrição estrita de acesso.",
+            svgDesenho: `<svg viewBox="0 0 300 150">
+                <rect x="50" y="20" width="200" height="110" fill="none" stroke="#38bdf8" stroke-width="2"/>
+                <rect x="120" y="45" width="60" height="60" fill="#f59e0b"/>
+                <text x="133" y="78" fill="#000" font-size="9" font-weight="bold">TRANSF.</text>
+                <rect x="50" y="90" width="15" height="40" fill="#dc2626"/>
+                <text x="75" y="120" fill="#dc2626" font-size="9">Vão de entrada: 70cm</text>
+            </svg>`
         },
         {
             id: 10,
             titulo: "Planta Baixa 10: Área de Pintura e Cabine de Aplicação",
             norma: "NR-15 / NR-23",
+            escala: "Escala 1:50",
             descricaoLayout: "Cabine de pintura spray instalada junto ao setor de montagem mecânica (geração de fagulhas por esmerilhadeiras) sem parede corta-fogo divisória.",
-            dicaTecnica: "Segregação de processos incompatíveis (fontes de ignição x atmosferas explosivas/inflamáveis) no desenho de layout."
+            dicaTecnica: "Segregação de processos incompatíveis (fontes de ignição x atmosferas explosivas/inflamáveis) no desenho de layout.",
+            svgDesenho: `<svg viewBox="0 0 300 150">
+                <rect x="30" y="25" width="240" height="100" fill="none" stroke="#38bdf8" stroke-width="2"/>
+                <rect x="45" y="40" width="90" height="70" fill="rgba(37,99,235,0.2)" stroke="#2563eb" stroke-dasharray="4"/>
+                <text x="55" y="78" fill="#38bdf8" font-size="9">Pintura (Inflamável)</text>
+                <rect x="165" y="40" width="90" height="70" fill="rgba(220,38,38,0.2)" stroke="#dc2626" stroke-dasharray="4"/>
+                <text x="175" y="70" fill="#dc2626" font-size="9">Esmeril (Fagulhas)</text>
+                <text x="100" y="135" fill="#f59e0b" font-size="9">⚠️ Ausência de parede corta-fogo</text>
+            </svg>`
         }
     ];
 
@@ -352,14 +482,19 @@
             <div class="card">
                 <div class="card-title">
                     <span>Planta ${item.id} de 10: ${item.titulo}</span>
-                    <span class="badge">Norma: ${item.norma}</span>
+                    <div class="badge-group">
+                        <span class="badge badge-scale">${item.escala}</span>
+                        <span class="badge">${item.norma}</span>
+                    </div>
                 </div>
 
                 <div class="blueprint-viewer">
                     <div class="blueprint-grid"></div>
-                    <div class="blueprint-content">
-                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 5h2v5h-2z"/></svg>
-                        <p><strong>Análise de Projeto:</strong> ${item.descricaoLayout}</p>
+                    <div class="blueprint-svg-container">
+                        ${item.svgDesenho}
+                    </div>
+                    <div class="blueprint-caption">
+                        <p><strong>Desenho Técnico / Projeto:</strong> ${item.descricaoLayout}</p>
                     </div>
                 </div>
 
@@ -382,7 +517,7 @@
                 <div class="btn-container">
                     <button id="prevBtn" onclick="prevStep()" ${currentStep === 0 ? 'style="visibility:hidden;"' : ''}>Anterior</button>
                     <div class="nav-buttons">
-                        <button onclick="nextStep()">${currentStep === atividades.length - 1 ? 'Finalizar Análise' : 'Próxima Planta'}</button>
+                        <button onclick="nextStep()">${currentStep === atividades.length - 1 ? 'Finalizar e Revisar' : 'Próxima Planta'}</button>
                     </div>
                 </div>
             </div>
@@ -400,14 +535,14 @@
         }
     }
 
-    function nextStep() {
+    window.nextStep = function() {
         saveCurrentAnswers();
         currentStep++;
         renderStep();
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function prevStep() {
+    window.prevStep = function() {
         saveCurrentAnswers();
         if (currentStep > 0) {
             currentStep--;
@@ -416,8 +551,128 @@
         }
     }
 
-    // Inicializa a aplicação na primeira planta
-    renderStep();
+    document.addEventListener("DOMContentLoaded", () => {
+        renderStep();
+
+        const downloadBtn = document.getElementById('downloadPdfBtn');
+        if (downloadBtn) {
+            downloadBtn.addEventListener('click', generatePDF);
+        }
+    });
+
+    // Função de geração e abertura de PDF infalível (dataurlnewwindow)
+    function generatePDF() {
+        if (typeof window.jspdf === 'undefined') {
+            alert('A biblioteca de PDF não foi carregada. Verifique sua conexão com a internet.');
+            return;
+        }
+
+        const studentNameInput = document.getElementById('studentName');
+        const studentClassInput = document.getElementById('studentClass');
+
+        const studentName = studentNameInput ? studentNameInput.value.trim() : '';
+        const studentClass = studentClassInput ? studentClassInput.value.trim() : '';
+
+        if (!studentName) {
+            alert('Por favor, informe o seu nome completo antes de gerar o PDF.');
+            if (studentNameInput) studentNameInput.focus();
+            return;
+        }
+
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        let y = 20;
+        const pageHeight = doc.internal.pageSize.height;
+
+        // Cabeçalho do Relatório
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(16);
+        doc.setTextColor(30, 58, 138);
+        doc.text("Relatório Técnico: Análise de Projetos e Plantas Baixas", 105, y, { align: "center" });
+        
+        y += 8;
+        doc.setFontSize(11);
+        doc.setTextColor(100, 116, 139);
+        doc.text("Segurança do Trabalho e Adequação Normativa", 105, y, { align: "center" });
+
+        y += 15;
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(10);
+        doc.setTextColor(51, 65, 85);
+        doc.text(`Aluno(a): ${studentName}`, 14, y);
+        doc.text(`Turma/Matrícula: ${studentClass || 'Não informada'}`, 130, y);
+
+        y += 6;
+        doc.setLineWidth(0.5);
+        doc.setLineColor(203, 213, 225);
+        doc.line(14, y, 196, y);
+
+        y += 10;
+
+        // Loop pelas respostas das 10 plantas
+        atividades.forEach((item, index) => {
+            const ans = userAnswers[index] || { erros: 'Não respondido', solucoes: 'Não respondido' };
+
+            if (y > pageHeight - 45) {
+                doc.addPage();
+                y = 20;
+            }
+
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(11);
+            doc.setTextColor(30, 58, 138);
+            doc.text(`Planta ${item.id}: ${item.titulo} (${item.escala})`, 14, y);
+            
+            y += 6;
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(9);
+            doc.setTextColor(71, 85, 105);
+            doc.text("Não-Conformidades Identificadas:", 14, y);
+            
+            y += 5;
+            doc.setFont("helvetica", "normal");
+            doc.setTextColor(51, 65, 85);
+            const splitErros = doc.splitTextToSize(ans.erros || 'Nenhum apontamento registrado.', 180);
+            doc.text(splitErros, 14, y);
+            y += (splitErros.length * 5) + 3;
+
+            if (y > pageHeight - 30) {
+                doc.addPage();
+                y = 20;
+            }
+
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(9);
+            doc.setTextColor(71, 85, 105);
+            doc.text("Propostas de Adequação Técnica / Layout:", 14, y);
+            
+            y += 5;
+            doc.setFont("helvetica", "normal");
+            doc.setTextColor(51, 65, 85);
+            const splitSol = doc.splitTextToSize(ans.solucoes || 'Nenhuma proposta registrada.', 180);
+            doc.text(splitSol, 14, y);
+            y += (splitSol.length * 5) + 8;
+
+            doc.setLineWidth(0.2);
+            doc.setLineColor(226, 232, 240);
+            doc.line(14, y - 3, 196, y - 3);
+        });
+
+        // Método nativo do jsPDF que abre o PDF em uma nova aba de forma robusta e sem bloqueios de blob
+        try {
+            doc.output('dataurlnewwindow');
+        } catch (e) {
+            // Fallback caso o navegador bloqueie a nova aba
+            const pdfDataUri = doc.output('datauristring');
+            const newWindow = window.open();
+            if (newWindow) {
+                newWindow.document.write(`<iframe width='100%' height='100%' src='${pdfDataUri}'></iframe>`);
+            } else {
+                alert('O seu navegador bloqueou a abertura da aba de PDF. Por favor, permita pop-ups para este site.');
+            }
+        }
+    }
 </script>
 
 </body>
