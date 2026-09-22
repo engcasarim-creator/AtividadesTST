@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratório de Análise de Projetos - Segurança do Trabalho</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #2563eb;
+            --accent: #f59e0b;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #334155;
+            --danger: #dc2626;
+            --success: #16a34a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .progress-bar-container {
+            background: #e2e8f0;
+            border-radius: 8px;
+            height: 16px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: var(--success);
+            height: 100%;
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+            border-left: 6px solid var(--secondary);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .badge {
+            background: #e0f2fe;
+            color: var(--secondary);
+            font-size: 0.8rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        /* Simulação Gráfica da Planta Baixa */
+        .blueprint-viewer {
+            background: #0f172a;
+            border: 2px dashed #475569;
+            border-radius: 8px;
+            height: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .blueprint-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .blueprint-content {
+            z-index: 2;
+            color: #38bdf8;
+            text-align: center;
+            padding: 15px;
+        }
+
+        .blueprint-content svg {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 8px;
+            fill: currentColor;
+        }
+
+        .blueprint-content p {
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #cbd5e1;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            resize: vertical;
+            min-height: 80px;
+            font-size: 0.95krem;
+            transition: border-color 0.2s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        button {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: #1d4ed8;
+        }
+
+        button:disabled {
+            background-color: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .summary-card {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .summary-card h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .feedback-box {
+            background: #f1f5f9;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            margin-top: 8px;
+            color: #475569;
+            border-left: 3px solid var(--accent);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Análise de Projetos e Plantas Baixas</h1>
+        <p>Identificação de Não-Conformidades e Adequações à Segurança do Trabalho (Desenho Técnico Aplicado)</p>
+    </header>
+
+    <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div id="quizContainer">
+        <!-- O conteúdo dinâmico dos exercícios será injetado via JavaScript -->
+    </div>
+
+    <div class="summary-card" id="summaryCard">
+        <h2>Parabéns! Atividade Concluída 🎯</h2>
+        <p>Você analisou com sucesso todas as 10 plantas baixas e propôs as melhorias de engenharia e segurança necessárias.</p>
+        <p style="margin-top: 15px; font-size: 0.9rem; color: #64748b;">Suas respostas foram registradas na tela. Você pode revisá-las ou exportar o seu relatório de projeto.</p>
+        <button onclick="location.reload()" style="margin-top: 20px;">Reiniciar Atividade</button>
+    </div>
+</div>
+
+<script>
+    const atividades = [
+        {
+            id: 1,
+            titulo: "Planta Baixa 01: Sala de Geradores e Chave Seccionadora",
+            norma: "NR-10 / NBR 9077",
+            descricaoLayout: "Layout de casa de geradores isolada. A porta de saída abre para o *interior* da sala e o painel elétrico principal está colado ao canto sem área de circulação livre.",
+            dicaTecnica: "Considere o sentido de abertura de portas de emergência em áreas de risco elétrico/incêndio e o espaço mínimo de aproximação de painéis."
+        },
+        {
+            id: 2,
+            titulo: "Planta Baixa 02: Estoque de Produtos Químicos Inflamáveis",
+            norma: "NR-20 / NBR 17505",
+            descricaoLayout: "Depósito fechado de solventes sem ventilação cruzada, com apenas uma porta estreita de 0,80m e ausência de bacia de contenção de vazamentos no piso.",
+            dicaTecnica: "Pense na dispersão de vapores inflamáveis, rotas de fuga e contenção ambiental primária."
+        },
+        {
+            id: 3,
+            titulo: "Planta Baixa 03: Setor de Estampagem (Prensas Mecânicas)",
+            norma: "NR-12",
+            descricaoLayout: "Arranjo físico (Layout) apertado onde o operador fica de costas para a rota principal de empilhadeiras, sem barreiras físicas ou corredores demarcados.",
+            dicaTecnica: "Avalie a separação física entre o tráfego de cargas (veículos) e o fluxo de pedestres/operadores."
+        },
+        {
+            id: 4,
+            titulo: "Planta Baixa 04: Escritório Administrativo - Fuga de Incêndio",
+            norma: "NBR 9077 (Saídas de Emergência)",
+            descricaoLayout: "Pavimento corporativo em formato de 'L' com uma única escada de emergência localizada a mais de 45 metros do extremo oposto e sem sinalização de balizamento.",
+            dicaTecnica: "Analise a distância máxima a ser percorrida até atingir uma saída segura de emergência."
+        },
+        {
+            id: 5,
+            titulo: "Planta Baixa 05: Laboratório de Análises Químicas",
+            norma: "NR-15 / NBR 14748",
+            descricaoLayout: "Laboratório com bancadas centrais compridas e apenas uma única via de acesso/saída bloqueada na extremidade por um armário corta-fogo mal posicionado.",
+            dicaTecnica: "Ambientes laboratoriais críticos exigem rotas de fuga desobstruídas em ambas as direções ou saídas duplas."
+        },
+        {
+            id: 6,
+            titulo: "Planta Baixa 06: Caldeiraria e Casa de Vapor",
+            norma: "NR-13",
+            descricaoLayout: "Instalação de caldeira em recinto confinado subterrâneo, com escada de acesso vertical tipo marinheiro enferrujada e sem painel de comando remoto externo.",
+            dicaTecnica: "Verifique as exigências de insolação, ventilação e posicionamento externo de painéis de controle de caldeiras."
+        },
+        {
+            id: 7,
+            titulo: "Planta Baixa 07: Cozinha Industrial de Grande Porte",
+            norma: "NR-12 / NBR 14518",
+            descricaoLayout: "Cozinha com fogões industriais e fritadeiras posicionados diretamente em frente à única porta de saída de serviço, cruzando a área de cocção com a rota de evacuação.",
+            dicaTecnica: "O fluxo de escape não deve cruzar zonas de alto risco térmico ou de queima direta."
+        },
+        {
+            id: 8,
+            titulo: "Planta Baixa 08: Almoxarifado Vertical com Ponto de Carga",
+            norma: "NR-11 / NR-12",
+            descricaoLayout: "Corredores de estanterias com largura de 0,90m onde operam simultaneamente carrinhos hidráulicos manuais e paleteiras elétricas de grande porte.",
+            dicaTecnica: "Dimensionamento de corredores em planta baixa para tráfego combinado de equipamentos e operadores."
+        },
+        {
+            id: 9,
+            titulo: "Planta Baixa 09: Subestação Elétrica Abrigada",
+            norma: "NR-10 (Prontuário e Instalações)",
+            descricaoLayout: "Sala de transformadores com vão de entrada livre de apenas 70cm e ausência de portas teladas para ventilação forçada ou isolamento contra intrusão acidental.",
+            dicaTecnica: "Atente-se às dimensões mínimas para movimentação de equipamentos pesados e restrição estrita de acesso."
+        },
+        {
+            id: 10,
+            titulo: "Planta Baixa 10: Área de Pintura e Cabine de Aplicação",
+            norma: "NR-15 / NR-23",
+            descricaoLayout: "Cabine de pintura spray instalada junto ao setor de montagem mecânica (geração de fagulhas por esmerilhadeiras) sem parede corta-fogo divisória.",
+            dicaTecnica: "Segregação de processos incompatíveis (fontes de ignição x atmosferas explosivas/inflamáveis) no desenho de layout."
+        }
+    ];
+
+    let currentStep = 0;
+    const userAnswers = {};
+
+    const quizContainer = document.getElementById('quizContainer');
+    const progressBar = document.getElementById('progressBar');
+    const summaryCard = document.getElementById('summaryCard');
+
+    function renderStep() {
+        if (currentStep >= atividades.length) {
+            quizContainer.style.display = 'none';
+            summaryCard.style.display = 'block';
+            progressBar.style.width = '100%';
+            return;
+        }
+
+        const item = atividades[currentStep];
+        const progress = (currentStep / atividades.length) * 100;
+        progressBar.style.width = `${progress}%`;
+
+        const savedErros = userAnswers[currentStep]?.erros || '';
+        const savedSolucoes = userAnswers[currentStep]?.solucoes || '';
+
+        quizContainer.innerHTML = `
+            <div class="card">
+                <div class="card-title">
+                    <span>Planta ${item.id} de 10: ${item.titulo}</span>
+                    <span class="badge">Norma: ${item.norma}</span>
+                </div>
+
+                <div class="blueprint-viewer">
+                    <div class="blueprint-grid"></div>
+                    <div class="blueprint-content">
+                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 5h2v5h-2z"/></svg>
+                        <p><strong>Análise de Projeto:</strong> ${item.descricaoLayout}</p>
+                    </div>
+                </div>
+
+                <div class="feedback-box">
+                    💡 <strong>Diretriz Técnica para Análise:</strong> ${item.dicaTecnica}
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <div class="form-group">
+                        <label for="erros">1. Quais são os erros ou não-conformidades de Segurança do Trabalho neste projeto?</label>
+                        <textarea id="erros" placeholder="Descreva o que está incorreto com base na norma aplicável...">${savedErros}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="solucoes">2. Proponha as melhorias e correções de desenho/layout necessárias:</label>
+                        <textarea id="solucoes" placeholder="Ex: Alterar o sentido da porta para fora, ampliar o corredor para X metros, adicionar bacia de contenção...">${savedSolucoes}</textarea>
+                    </div>
+                </div>
+
+                <div class="btn-container">
+                    <button id="prevBtn" onclick="prevStep()" ${currentStep === 0 ? 'style="visibility:hidden;"' : ''}>Anterior</button>
+                    <div class="nav-buttons">
+                        <button onclick="nextStep()">${currentStep === atividades.length - 1 ? 'Finalizar Análise' : 'Próxima Planta'}</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function saveCurrentAnswers() {
+        const errosInput = document.getElementById('erros');
+        const solucoesInput = document.getElementById('solucoes');
+        if (errosInput && solucoesInput) {
+            userAnswers[currentStep] = {
+                erros: errosInput.value,
+                solucoes: solucoesInput.value
+            };
+        }
+    }
+
+    function nextStep() {
+        saveCurrentAnswers();
+        currentStep++;
+        renderStep();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function prevStep() {
+        saveCurrentAnswers();
+        if (currentStep > 0) {
+            currentStep--;
+            renderStep();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+
+    // Inicializa a aplicação na primeira planta
+    renderStep();
+</script>
+
+</body>
+</html>
